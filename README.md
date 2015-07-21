@@ -1,0 +1,4 @@
+Lojjing
+=======
+
+Errors visualizer
