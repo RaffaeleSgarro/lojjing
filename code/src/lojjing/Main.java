@@ -40,15 +40,13 @@ public class Main {
 
         Report report = new Report(reportDirectory);
 
-        // TODO remove this!
-        int counter = 0;
+        report.blacklist(-1);
+        report.blacklist(-1261522583);
+        report.blacklist(-1404517635);
 
         for (CSVRecord csv : parser) {
-            report.add(new Event(csv.get("log_timestamp"), csv.get("core_id"), csv.get("content")));
-
-            if (counter == -1)
-                break;
-            counter++;
+            Event evt = new Event(csv.get("log_timestamp"), csv.get("core_id"), csv.get("content"));
+            report.add(evt);
         }
 
         report.flush();

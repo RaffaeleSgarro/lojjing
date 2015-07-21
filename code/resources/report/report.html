@@ -8,21 +8,29 @@
   <link href='metricsgraphics.css' rel='stylesheet' type='text/css'>
 </head>
 <body>
-  <h1>Lojjing report</h1>
-  <div id="canvas"></div>
-  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
-  <script src='metricsgraphics.min.js'></script>
-  <script>
+<h1>Lojjing report</h1>
+<div id="canvas"></div>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
+<script src='metricsgraphics.min.js'></script>
+<script>
   d3.json('report.json', function(json) {
-    var data = MG.convert.date(json, 'date');
+    var data = [];
+    var i;
+
+    for (i = 0; i < json.length; i++) {
+      data[i] = MG.convert.date(json[i], 'date');
+    }
+
     MG.data_graphic({
       title: "All errors",
       description: "Records in APP_LOG",
       data: data,
       width: 800,
       height: 300,
+      right: 100,
       target: '#canvas',
+      legend: <%= legend %>,
       x_accessor: 'date',
       y_accessor: 'value'
     });

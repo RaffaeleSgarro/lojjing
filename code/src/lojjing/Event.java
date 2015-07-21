@@ -37,7 +37,27 @@ public class Event {
     }
 
     public int signature() {
-        return 0;
+        String[] lines = content.split("\\r?\\n");
+
+        if (lines.length < 3)
+            return -1;
+
+        int signature = 0;
+        // skip log line
+
+        // First exception line is of the form ExceptionClass[: message]
+        int colonIndex = lines[1].indexOf(':');
+        if (colonIndex > 0) {
+            signature += lines[1].substring(0, colonIndex).hashCode();
+        } else {
+            signature += lines[1].hashCode();
+        }
+
+        for (int i = 2; i < lines.length; i++) {
+            signature += lines[i].trim().hashCode();
+        }
+
+        return signature;
     }
 
     public LocalDate day() {
