@@ -1,0 +1,32 @@
+<html>
+<head>
+  <title>Report</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+  <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
+  <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <link href='metricsgraphics.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <h1>Lojjing report</h1>
+  <div id="canvas"></div>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
+  <script src='metricsgraphics.min.js'></script>
+  <script>
+  d3.json('report.json', function(json) {
+    var data = MG.convert.date(json, 'date');
+    MG.data_graphic({
+      title: "All errors",
+      description: "Records in APP_LOG",
+      data: data,
+      width: 800,
+      height: 300,
+      target: '#canvas',
+      x_accessor: 'date',
+      y_accessor: 'value'
+    });
+  });
+  </script>
+</body>
+</html>

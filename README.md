@@ -5,7 +5,10 @@ Errors visualizer
 
 Running
 =======
-command c:\users\foo\data.csv
+
+    java lojjing.Main c:\users\foo\data.csv
+    cd report
+    python -m http.server
 
 Devlopers here
 ==============

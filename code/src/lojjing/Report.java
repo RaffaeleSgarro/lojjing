@@ -1,9 +1,9 @@
 package lojjing;
 
 import com.google.gson.stream.JsonWriter;
+import org.apache.commons.io.IOUtils;
 
-import java.io.File;
-import java.io.PrintWriter;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -20,7 +20,6 @@ public class Report {
     public Report(File reportsDir) throws Exception {
         this.reportsDir = reportsDir;
         report = new JsonWriter(new PrintWriter(new File(reportsDir, "report.json"), "UTF-8"));
-        report.beginArray();
         report.beginArray();
     }
 
@@ -46,8 +45,20 @@ public class Report {
             aggregator.flush();
 
         report.endArray();
-        report.endArray();
         report.flush();
+
+        copy("metricsgraphics.css");
+        copy("metricsgraphics.min.js");
+        copy("report.html");
+    }
+
+    private void copy(String resource) throws Exception {
+        InputStream in = Report.class.getResourceAsStream("/report/" + resource);
+        OutputStream out = new FileOutputStream(new File(directory(), resource));
+        IOUtils.copy(in, out);
+        in.close();
+        out.flush();
+        out.close();
     }
 
     private class Aggregator {

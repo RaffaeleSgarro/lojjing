@@ -2,5 +2,5 @@ build/
 out/
 tmp/
 
-data.csv
-report/
+/data.csv
+/report/
