@@ -40,6 +40,12 @@ public class NormalizerTest {
         matches("Messaggio dal SISS: Il dato \"codicePrestazione\" : \"UB5\" non e' valido.");
     }
 
+    @Test
+    public void testInvoiceNumberConversion() throws Exception {
+        thisOne("Caused by: com.vaadin.data.util.converter.Converter$ConversionException: Could not convert '15/2015' to java.lang.Integer");
+        matches("Caused by: com.vaadin.data.util.converter.Converter$ConversionException: Could not convert '25/2010' to java.lang.Integer");
+    }
+
     @BeforeMethod
     public void setUp() throws Exception {
         target = new Normalizer();

@@ -19,6 +19,8 @@ public class Normalizer {
             return "com.sun.proxy.*";
         } else if (line.contains("Messaggio dal SISS: Il dato \"codicePrestazione\"") && line.contains(" non e' valido.")) {
             return "Prestazione obsoleta";
+        } else if (line.startsWith("Caused by: com.vaadin.data.util.converter.Converter$ConversionException") && line.endsWith("to java.lang.Integer")) {
+            return "Caused by: com.vaadin.data.util.converter.Converter$ConversionException: Could not convert 'STR' to java.lang.Integer";
         } else {
             return line;
         }
