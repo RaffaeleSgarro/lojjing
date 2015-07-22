@@ -1,11 +1,18 @@
 package lojjing;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
+import javafx.scene.paint.Material;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Event {
 
@@ -73,6 +80,40 @@ public class Event {
         if (lines.length < 2)
             return "N/A";
 
-        return lines[1];
+        String messageLine = lines[1];
+
+        if (messageLine.equals("java.lang.NullPointerException")) {
+            return "NPE at " + abbreviateInvocation(lines[2].substring(4));
+        } else {
+            return messageLine;
+        }
+    }
+
+    public String abbreviateInvocation(String str) {
+        Pattern obfuscated = Pattern.compile("(?<package>.+?)\\.(?<class>[^\\.]+)\\.(?<method>[a-zA-Z0-9]+)\\(.*\\) \\(return .+\\)\\(a:(?<line>[\\d]+)\\)");
+        Matcher m = obfuscated.matcher(str);
+
+        Pattern java = Pattern.compile("(?<package>.+?)\\.(?<class>[^\\.]+)\\.(?<method>[a-zA-Z0-9]+)\\(.*:(?<line>[\\d]+)\\)");
+        Matcher m2 = java.matcher(str);
+
+        if (m.matches()) {
+            String pkg = m.group("package");
+            String klass = m.group("class");
+            String method = m.group("method");
+            String line = m.group("line");
+            return pkg(pkg) + "." + klass + "." + method + ":" + line;
+        } else if (m2.matches()) {
+            String pkg = m2.group("package");
+            String klass = m2.group("class");
+            String method = m2.group("method");
+            String line = m2.group("line");
+            return pkg(pkg) + "." + klass + "." + method + ":" + line;
+        } else {
+            return str;
+        }
+    }
+
+    private String pkg(String in) {
+        return Arrays.stream(in.split("\\.")).map(n -> Character.toString(n.charAt(0))).collect(Collectors.joining("."));
     }
 }
