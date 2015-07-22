@@ -64,5 +64,50 @@
         "value": "7"
       }
     ]
+  ],
+
+  "distributions": [
+    [
+      {
+        "host": "s55001",
+        "count": 120
+      },
+      {
+        "host": "s20001",
+        "count": 24
+      },
+      {
+        "host": "w3",
+        "count": 2
+      }
+    ],
+    [
+      {
+        "host": "s55001",
+        "count": 210
+      },
+      {
+        "host": "s20001",
+        "count": 124
+      },
+      {
+        "host": "w3",
+        "count": 32
+      }
+    ],
+    [
+      {
+        "host": "s35006",
+        "count": 120
+      },
+      {
+        "host": "s20001",
+        "count": 6
+      },
+      {
+        "host": "w3",
+        "count": 4
+      }
+    ]
   ]
 }

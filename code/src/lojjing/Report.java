@@ -38,9 +38,9 @@ public class Report {
         all.addAll(seriesMap.values());
         Collections.sort(all, (s1, s2) -> s2.total() - s1.total());
 
+        // Headers
         report.name("headers");
         report.beginArray();
-
         for (Series series : all) {
             report.beginObject();
             report.name("message");
@@ -53,16 +53,22 @@ public class Report {
             report.value(series.trace());
             report.endObject();
         }
-
         report.endArray();
 
+        // Time series
         report.name("data");
         report.beginArray();
-
         for (Series series : all) {
             series.flush();
         }
+        report.endArray();
 
+        // Distribution among cores
+        report.name("distributions");
+        report.beginArray();
+        for (Series series : all) {
+            series.writeFrequencies();
+        }
         report.endArray();
 
         report.endObject();
@@ -94,11 +100,40 @@ public class Report {
         return in;
     }
 
+    private class HostCounter implements Comparable<HostCounter> {
+
+        private final String host;
+
+        private int counter = 1;
+
+        public HostCounter(String host) {
+            this.host = host;
+        }
+
+        public void increment() {
+            counter++;
+        }
+
+        @Override
+        public int compareTo(HostCounter that) {
+            return Integer.compare(this.count(), that.count());
+        }
+
+        private int count() {
+            return counter;
+        }
+
+        public String host() {
+            return host;
+        }
+    }
+
     private class Series {
 
         private final List<Aggregator> aggregators = new ArrayList<>();
         private final Event event;
         private final String trace;
+        private final Map<String, HostCounter> frequencies = new HashMap<>();
 
         private Aggregator aggregator;
         private int total = 0;
@@ -124,6 +159,12 @@ public class Report {
 
             aggregator.add(event);
             total++;
+
+            if (frequencies.containsKey(event.core())) {
+                frequencies.get(event.core()).increment();
+            } else {
+                frequencies.put(event.core(), new HostCounter(event.core()));
+            }
         }
 
         public int total() {
@@ -140,6 +181,26 @@ public class Report {
 
         public String trace() {
             return trace;
+        }
+
+        public void writeFrequencies() throws Exception {
+            List<HostCounter> counters = new ArrayList<>();
+            counters.addAll(frequencies.values());
+            Collections.sort(counters);
+
+            report.beginArray();
+
+            for (int i = counters.size() - 1; i >= 0; i--) {
+                HostCounter counter = counters.get(i);
+                report.beginObject();
+                report.name("host");
+                report.value(counter.host());
+                report.name("count");
+                report.value(counter.count());
+                report.endObject();
+            }
+
+            report.endArray();
         }
     }
 
