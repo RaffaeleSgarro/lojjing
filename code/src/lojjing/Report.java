@@ -83,6 +83,7 @@ public class Report {
         report.flush();
 
         copy("metricsgraphics.css");
+        copy("bootstrap.min.css");
         copy("metricsgraphics.min.js");
         copy("underscore.min.js");
         copy("report.html");
@@ -99,7 +100,11 @@ public class Report {
     }
 
     private InputStream res(String resource) {
-        return Report.class.getResourceAsStream("/report/" + resource);
+        String fullResourceName = "/report/" + resource;
+        InputStream in = Report.class.getResourceAsStream(fullResourceName);
+        if (in == null)
+            throw new RuntimeException("Could not find resource with name " + fullResourceName);
+        return in;
     }
 
     public void blacklist(int signature) {
