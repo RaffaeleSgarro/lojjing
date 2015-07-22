@@ -39,6 +39,12 @@ public class EventSignatureTest {
         assertSameSignature("001", "002");
     }
 
+    @Test
+    public void ProceduraSISSNonRiuscita_001() throws Exception {
+        setGroup("ProceduraSISSNonRiuscita/001");
+        assertSameSignature("001", "002");
+    }
+
     @BeforeMethod
     public void setUp() throws Exception {
         group = null;

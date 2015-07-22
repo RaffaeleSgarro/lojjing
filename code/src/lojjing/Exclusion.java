@@ -17,7 +17,17 @@ public class Exclusion {
                 || more()
                 || atmosphere()
                 || rejectedExecutionException()
-                || proxy();
+                || proxy()
+                || sissPreamble()
+                || sissObsoleteItem();
+    }
+
+    private boolean sissPreamble() {
+        return line.contains("Procedura SISS non riuscita");
+    }
+
+    private boolean sissObsoleteItem() {
+        return line.contains("Messaggio dal SISS: Il dato \"codicePrestazione\"") && line.contains(" non e' valido.");
     }
 
     private boolean proxy() {
