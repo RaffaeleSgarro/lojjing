@@ -41,6 +41,7 @@ Exception.prototype.expand = function() {
       height: 300,
       right: 100,
       target: chart,
+      missing_is_zero: true,
       x_accessor: 'date',
       y_accessor: 'value'
     });
