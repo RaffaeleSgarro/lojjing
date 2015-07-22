@@ -38,22 +38,10 @@ public class Report {
         all.addAll(seriesMap.values());
         Collections.sort(all, (s1, s2) -> s2.total() - s1.total());
 
-        System.err.println("Remove this!");
-        List<Series> top20 = new ArrayList<>();
-        int available = 20;
-
-        for (Series series : all) {
-            top20.add(series);
-            available--;
-
-            if (available == 0)
-                break;
-        }
-
         report.name("headers");
         report.beginArray();
 
-        for (Series series : top20) {
+        for (Series series : all) {
             report.beginObject();
             report.name("message");
             report.value(series.message());
@@ -71,7 +59,7 @@ public class Report {
         report.name("data");
         report.beginArray();
 
-        for (Series series : top20) {
+        for (Series series : all) {
             series.flush();
         }
 
