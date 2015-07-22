@@ -60,7 +60,7 @@ public class Report {
             report.name("message");
             report.value(series.message());
             report.name("signature");
-            report.value("S: " + series.signature());
+            report.value(series.signature());
             report.name("count");
             report.value(series.total());
             report.name("trace");

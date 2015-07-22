@@ -11,6 +11,16 @@
       padding: 20px;
       text-align: center;
     }
+
+    .trace {
+      margin-top: 10px;
+    }
+
+    .footer {
+      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -30,6 +40,11 @@
         <div id="details"></div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-12">
+        <footer class="footer">Made with <3 by Lojjing</footer>
+      </div>
+    </div>
   </div>
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
@@ -47,7 +62,16 @@
     {{#errors}}
     <tr>
       <td>{{count}}</td>
-      <td><div>{{message}}<button class="btn btn-default">Expand</button><button class="btn btn-default">Collapse</button></div><pre><code>{{trace}}</code></pre></td>
+      <td class="message">
+        <div>
+          {{message}}
+          <button class="btn btn-xs btn-default action-expand">Expand</button>
+          <button class="btn btn-xs btn-default action-collapse">Collapse</button>
+        </div>
+        <pre class="trace">
+          <code>{{trace}}</code>
+        </pre>
+      </td>
       <td>{{signature}}</td>
     </tr>
     {{/errors}}
@@ -55,6 +79,27 @@
 
 </script>
 <script>
+  var Exception = function(e) {
+    // .action-expand .action-collapse .trace
+    this.trace = $('.trace', e);
+
+    $('.action-expand', e).click(this, function(e){
+      e.data.expand();
+    });
+
+    $('.action-collapse', e).click(this, function(e){
+      e.data.collapse();
+    });
+  };
+
+  Exception.prototype.expand = function() {
+    this.trace.show();
+  };
+
+  Exception.prototype.collapse = function() {
+    this.trace.hide();
+  };
+
   d3.json('report.json', function(json) {
     var data = [];
     var i;
@@ -77,6 +122,11 @@
     });
 
     $('#details').html(Mustache.render($('#tpl-details').html(), {errors: json.headers}));
+
+    $('#details td.message').each(function(index, el){
+      var exception = new Exception(el);
+      exception.collapse();
+    });
   });
   </script>
 </body>
