@@ -15,7 +15,6 @@ public class Report {
     private final File reportsDir;
     private final JsonWriter report;
     private final Map<Integer, Series> seriesMap = new HashMap<>();
-    private final Set<Integer> blacklist = new HashSet<>();
 
     public Report(File reportsDir) throws Exception {
         this.reportsDir = reportsDir;
@@ -44,10 +43,9 @@ public class Report {
         int available = 20;
 
         for (Series series : all) {
-            if (!blacklist.contains(series.signature())) {
-                top20.add(series);
-                available--;
-            }
+            top20.add(series);
+            available--;
+
             if (available == 0)
                 break;
         }
@@ -105,10 +103,6 @@ public class Report {
         if (in == null)
             throw new RuntimeException("Could not find resource with name " + fullResourceName);
         return in;
-    }
-
-    public void blacklist(int signature) {
-        blacklist.add(signature);
     }
 
     private class Series {
