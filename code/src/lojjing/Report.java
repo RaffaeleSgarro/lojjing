@@ -81,6 +81,7 @@ public class Report {
         copy("mustache.min.js");
         copy("main.js");
         copy("index.html");
+        copy("README.txt");
     }
 
     private void copy(String resource) throws Exception {
