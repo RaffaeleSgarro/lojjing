@@ -13,14 +13,18 @@ public class Exclusion {
     }
 
     public boolean exclude() {
-        return reflection() || more();
+        return reflection() || more() || atmosphere();
+    }
+
+    private boolean atmosphere() {
+        return line.contains("org.atmosphere.cpr.DefaultBroadcasterFactory$BroadcasterCreationException");
     }
 
     private boolean more() {
         return more.matcher(line).find();
     }
 
-    public boolean reflection() {
+    private boolean reflection() {
         return line.contains("sun.reflect.");
     }
 

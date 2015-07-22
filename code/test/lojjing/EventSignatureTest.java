@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertSame;
 
 public class EventSignatureTest {
 
@@ -24,6 +25,12 @@ public class EventSignatureTest {
     public void SOAPExceptionImpl_002() throws Exception {
         setGroup("SOAPExceptionImpl/002");
         assertSameSignature("001", "002", "003", "004");
+    }
+
+    @Test
+    public void RuntimeException_Push_failed() throws Exception {
+        setGroup("RuntimeException_Push_failed/001");
+        assertSameSignature("001", "002");
     }
 
     @BeforeMethod

@@ -16,6 +16,11 @@ public class ExclusionTest {
         shouldExclude("\tat sun.reflect.GeneratedMethodAccessor13.invoke(Unknown Source)");
     }
 
+    @Test
+    public void testExcludeAtmosphere() throws Exception {
+        shouldExclude("Caused by: org.atmosphere.cpr.DefaultBroadcasterFactory$BroadcasterCreationException: java.util.concurrent.RejectedExecutionException: Task java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask@1f5e459 rejected from java.util.concurrent.ScheduledThreadPoolExecutor@62b0e3[Shutting down, pool size = 2, active threads = 0, queued tasks = 0, completed tasks = 1953]\n");
+    }
+
     private void shouldExclude(String line) {
         Exclusion target = new Exclusion(line);
         assertTrue(target.exclude(), "Line [" + line + "] should have been excluded");
