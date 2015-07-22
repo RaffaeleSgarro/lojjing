@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.regex.Pattern;
 
 public class Event {
 
@@ -57,10 +56,8 @@ public class Event {
 
         for (int i = 2; i < lines.length; i++) {
             String line = lines[i];
-            Exclusion exclusion = new Exclusion(line);
-            if (exclusion.exclude())
-                continue;
-            signature += lines[i].trim().hashCode();
+            Normalizer normalizer = new Normalizer();
+            signature += normalizer.normalize(line).trim().hashCode();
         }
 
         return signature;
