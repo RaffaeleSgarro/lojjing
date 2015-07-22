@@ -13,7 +13,19 @@ public class Exclusion {
     }
 
     public boolean exclude() {
-        return reflection() || more() || atmosphere();
+        return reflection()
+                || more()
+                || atmosphere()
+                || rejectedExecutionException()
+                || proxy();
+    }
+
+    private boolean proxy() {
+        return line.contains("com.sun.proxy");
+    }
+
+    private boolean rejectedExecutionException() {
+        return line.contains("java.util.concurrent.RejectedExecutionException");
     }
 
     private boolean atmosphere() {

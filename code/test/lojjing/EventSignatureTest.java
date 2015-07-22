@@ -30,6 +30,12 @@ public class EventSignatureTest {
     @Test
     public void RuntimeException_Push_failed() throws Exception {
         setGroup("RuntimeException_Push_failed/001");
+        assertSameSignature("001", "002", "003");
+    }
+
+    @Test
+    public void UndeclaredThrowableException_001() throws Exception {
+        setGroup("UndeclaredThrowableException/001");
         assertSameSignature("001", "002");
     }
 
