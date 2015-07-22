@@ -6,20 +6,61 @@
   <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
   <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
   <link href='metricsgraphics.css' rel='stylesheet' type='text/css'>
+  <style>
+    #canvas {
+      padding: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-<h1>Lojjing report</h1>
-<div id="canvas"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Lojjing report</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="canvas"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="details"></div>
+      </div>
+    </div>
+  </div>
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
 <script src='metricsgraphics.min.js'></script>
+<script src='underscore.min.js'></script>
+<script src='mustache.min.js'></script>
+<script id="tpl-details" type="x-tmpl-mustache">
+
+  <table class="table">
+    <tr>
+      <th>Count</th>
+      <th>Message</th>
+      <th>Signature</th>
+    </tr>
+    {{#errors}}
+    <tr>
+      <td>{{count}}</td>
+      <td><div>{{message}}<button class="btn btn-default">Expand</button><button class="btn btn-default">Collapse</button></div><pre><code>{{trace}}</code></pre></td>
+      <td>{{signature}}</td>
+    </tr>
+    {{/errors}}
+  </table>
+
+</script>
 <script>
   d3.json('report.json', function(json) {
     var data = [];
     var i;
 
-    for (i = 0; i < json.length; i++) {
-      data[i] = MG.convert.date(json[i], 'date');
+    for (i = 0; i < json.data.length; i++) {
+      data[i] = MG.convert.date(json.data[i], 'date');
     }
 
     MG.data_graphic({
@@ -30,10 +71,12 @@
       height: 300,
       right: 100,
       target: '#canvas',
-      legend: <%= legend %>,
+      legend: _.pluck(json.headers, 'signature'),
       x_accessor: 'date',
       y_accessor: 'value'
     });
+
+    $('#details').html(Mustache.render($('#tpl-details').html(), {errors: json.headers}));
   });
   </script>
 </body>

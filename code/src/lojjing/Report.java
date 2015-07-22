@@ -1,6 +1,5 @@
 package lojjing;
 
-import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
 import org.apache.commons.io.IOUtils;
 
@@ -21,14 +20,14 @@ public class Report {
     public Report(File reportsDir) throws Exception {
         this.reportsDir = reportsDir;
         report = new JsonWriter(new PrintWriter(new File(reportsDir, "report.json"), "UTF-8"));
-        report.beginArray();
+        report.beginObject();
     }
 
-    public void add(Event event) throws Exception {
+    public void add(Event event, String trace) throws Exception {
         Series series = seriesMap.get(event.signature());
 
         if (series == null) {
-            series = new Series(event.signature());
+            series = new Series(event, trace);
             seriesMap.put(event.signature(), series);
         }
 
@@ -36,51 +35,58 @@ public class Report {
     }
 
     public void flush() throws Exception {
-
-        List<Series> top10 = new ArrayList<>();
-
         List<Series> all = new ArrayList<>();
         all.addAll(seriesMap.values());
         Collections.sort(all, (s1, s2) -> s2.total() - s1.total());
 
-        int available = 10;
-
         System.err.println("Remove this!");
+        List<Series> top20 = new ArrayList<>();
+        int available = 20;
 
         for (Series series : all) {
-            if (!blacklist.contains(series.signature)) {
-                top10.add(series);
-                series.flush();
+            if (!blacklist.contains(series.signature())) {
+                top20.add(series);
                 available--;
             }
-
             if (available == 0)
                 break;
         }
 
+        report.name("headers");
+        report.beginArray();
+
+        for (Series series : top20) {
+            report.beginObject();
+            report.name("message");
+            report.value(series.message());
+            report.name("signature");
+            report.value("S: " + series.signature());
+            report.name("count");
+            report.value(series.total());
+            report.name("trace");
+            report.value(series.trace());
+            report.endObject();
+        }
+
         report.endArray();
+
+        report.name("data");
+        report.beginArray();
+
+        for (Series series : top20) {
+            series.flush();
+        }
+
+        report.endArray();
+
+        report.endObject();
         report.flush();
 
         copy("metricsgraphics.css");
         copy("metricsgraphics.min.js");
-
-        Map<String, String> params = new HashMap<>();
-        params.put("legend", new Gson().toJson(top10.stream().map(series -> "Signature: " + series.signature()).toArray()));
-        template("report.html", params);
-    }
-
-    private void template(String resource, Map<String, String> params) throws Exception {
-        InputStream in = res(resource);
-        String template = IOUtils.toString(in, "UTF-8");
-        in.close();
-        String text = template;
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            text = text.replace("<%= " + entry.getKey() + " %>", entry.getValue());
-        }
-        OutputStream out = new FileOutputStream(new File(directory(), resource));
-        IOUtils.write(text, out, "UTF-8");
-        out.flush();
-        out.close();
+        copy("underscore.min.js");
+        copy("report.html");
+        copy("mustache.min.js");
     }
 
     private void copy(String resource) throws Exception {
@@ -102,14 +108,16 @@ public class Report {
 
     private class Series {
 
-        private final int signature;
         private final List<Aggregator> aggregators = new ArrayList<>();
+        private final Event event;
+        private final String trace;
 
         private Aggregator aggregator;
         private int total = 0;
 
-        private Series(int signature) {
-            this.signature = signature;
+        private Series(Event event, String trace) {
+            this.event = event;
+            this.trace = trace;
         }
 
         public void flush() throws Exception {
@@ -135,7 +143,15 @@ public class Report {
         }
 
         public int signature() {
-            return signature;
+            return event.signature();
+        }
+
+        public String message() {
+            return event.message();
+        }
+
+        public String trace() {
+            return trace;
         }
     }
 

@@ -63,4 +63,13 @@ public class Event {
     public LocalDate day() {
         return new Date(timestamp()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
+
+    public String message() {
+        String[] lines = content.split("\\r?\\n");
+
+        if (lines.length < 2)
+            return "N/A";
+
+        return lines[1];
+    }
 }

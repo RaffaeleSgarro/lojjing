@@ -46,7 +46,7 @@ public class Main {
 
         for (CSVRecord csv : parser) {
             Event evt = new Event(csv.get("log_timestamp"), csv.get("core_id"), csv.get("content"));
-            report.add(evt);
+            report.add(evt, csv.get("content"));
         }
 
         report.flush();
