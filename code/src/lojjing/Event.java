@@ -6,10 +6,12 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class Event {
 
     private static final DateFormat csvFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     private final String timestamp;
     private final String core;
     private final String content;
@@ -54,6 +56,10 @@ public class Event {
         }
 
         for (int i = 2; i < lines.length; i++) {
+            String line = lines[i];
+            Exclusion exclusion = new Exclusion(line);
+            if (exclusion.exclude())
+                continue;
             signature += lines[i].trim().hashCode();
         }
 
