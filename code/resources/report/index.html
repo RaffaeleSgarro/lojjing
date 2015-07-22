@@ -12,7 +12,7 @@
       background-color: #f4f4f4;
     }
 
-    #canvas {
+    .chart {
       padding: 20px;
       text-align: center;
     }
@@ -42,11 +42,6 @@
     <div class="report">
       <div class="row">
         <div class="col-md-12">
-          <div id="canvas"></div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
           <div id="details"></div>
         </div>
       </div>
@@ -63,7 +58,6 @@
 <script src='underscore.min.js'></script>
 <script src='mustache.min.js'></script>
 <script id="tpl-details" type="x-tmpl-mustache">
-
   <table class="table table-striped table-condensed">
     <tr>
       <th>Count</th>
@@ -75,68 +69,20 @@
       <td>{{count}}</td>
       <td class="message">
         <div>
+          <div>
+            <button class="btn btn-xs btn-default action-expand">Expand</button>
+            <button class="btn btn-xs btn-default action-collapse">Collapse</button>
+          </div>
           {{message}}
-          <button class="btn btn-xs btn-default action-expand">Expand</button>
-          <button class="btn btn-xs btn-default action-collapse">Collapse</button>
         </div>
+        <div class="chart"></div>
         <pre class="trace"><code>{{trace}}</code></pre>
       </td>
       <td>{{signature}}</td>
     </tr>
     {{/errors}}
   </table>
-
 </script>
-<script>
-  var Exception = function(e) {
-    // .action-expand .action-collapse .trace
-    this.trace = $('.trace', e);
-
-    $('.action-expand', e).click(this, function(e){
-      e.data.expand();
-    });
-
-    $('.action-collapse', e).click(this, function(e){
-      e.data.collapse();
-    });
-  };
-
-  Exception.prototype.expand = function() {
-    this.trace.show();
-  };
-
-  Exception.prototype.collapse = function() {
-    this.trace.hide();
-  };
-
-  d3.json('report.json', function(json) {
-    var data = [];
-    var i;
-
-    for (i = 0; i < json.data.length; i++) {
-      data[i] = MG.convert.date(json.data[i], 'date');
-    }
-
-    MG.data_graphic({
-      title: "All errors",
-      description: "Records in APP_LOG",
-      data: data,
-      width: 800,
-      height: 300,
-      right: 100,
-      target: '#canvas',
-      legend: _.pluck(json.headers, 'signature'),
-      x_accessor: 'date',
-      y_accessor: 'value'
-    });
-
-    $('#details').html(Mustache.render($('#tpl-details').html(), {errors: json.headers}));
-
-    $('#details td.message').each(function(index, el){
-      var exception = new Exception(el);
-      exception.collapse();
-    });
-  });
-  </script>
+<script src="main.js"></script>
 </body>
 </html>

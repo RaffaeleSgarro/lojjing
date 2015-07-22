@@ -84,8 +84,9 @@ public class Report {
         copy("bootstrap.min.css");
         copy("metricsgraphics.min.js");
         copy("underscore.min.js");
-        copy("report.html");
         copy("mustache.min.js");
+        copy("main.js");
+        copy("index.html");
     }
 
     private void copy(String resource) throws Exception {
