@@ -2,6 +2,13 @@ package lojjing;
 
 import java.util.regex.Pattern;
 
+/**
+ * TODO rename to Normalize
+ *
+ * Instead of returning a boolean should return a String. This way can really account for similar lines. Current
+ * implementation is flawed and may group messages that are not really related
+ */
+@Deprecated
 public class Exclusion {
 
     private static final Pattern more = Pattern.compile("\\.\\.\\. [\\d]+ more");
@@ -12,6 +19,7 @@ public class Exclusion {
         this.line = line;
     }
 
+    @Deprecated
     public boolean exclude() {
         return reflection()
                 || more()
