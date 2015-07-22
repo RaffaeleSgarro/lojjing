@@ -15,16 +15,13 @@ Report.prototype.load = function(limit) {
 
 var Exception = function(index, e) {
   this.index = index;
+  this.toggler = $('.action-toggle', e);
   this.trace = $('.trace', e);
   this.chart = $('.chart', e);
   this.distribution = $('.distribution', e);
 
-  $('.action-expand', e).click(this, function(e){
-    e.data.expand();
-  });
-
-  $('.action-collapse', e).click(this, function(e){
-    e.data.collapse();
+  $('.action-toggle', e).click(this, function(e){
+    e.data.toggle();
   });
 };
 
@@ -33,6 +30,8 @@ Exception.prototype.expand = function() {
   var chart = this.chart[0];
   var distribution = this.distribution[0];
 
+  this.collapsed = false;
+  this.toggler.text('Chiudi');
   this.trace.show();
   this.chart.show();
   this.distribution.show();
@@ -49,18 +48,6 @@ Exception.prototype.expand = function() {
       y_accessor: 'value'
     });
 
-    var bar_data = [
-        {'label': 'first', 'value':4, 'baseline':4.2, 'prediction': 2},
-        {'label': 'second', 'value':2.1, 'baseline':3.1, 'prediction': 3},
-        {'label': 'third', 'value':6.3, 'baseline':6.3, 'prediction': 4},
-        {'label': 'fourth', 'value':5.7, 'baseline':3.2, 'prediction': 5},
-        {'label': 'fifth', 'value':5, 'baseline':4.2, 'prediction': 3},
-        {'label': 'sixth', 'value':4.2, 'baseline':10.2, 'prediction': 3},
-        {'label': 'yet another', 'value':4.2, 'baseline':10.2, 'prediction': 3},
-        {'label': 'and again', 'value':4.2, 'baseline':10.2, 'prediction': 3},
-        {'label': 'and sss', 'value':4.2, 'baseline':10.2, 'prediction': 3}
-    ];
-
     MG.data_graphic({
         data: json.distributions[i],
         chart_type: 'bar',
@@ -72,7 +59,6 @@ Exception.prototype.expand = function() {
         animate_on_load: true,
         target: distribution
     });
-
   });
 };
 
@@ -80,7 +66,17 @@ Exception.prototype.collapse = function() {
   this.trace.hide();
   this.chart.hide();
   this.distribution.hide();
+  this.toggler.text('Apri');
+  this.collapsed = true;
 };
+
+Exception.prototype.toggle = function() {
+  if (this.collapsed) {
+    this.expand();
+  } else {
+    this.collapse();
+  }
+}
 
 /**********************************************************************************************************************/
 var report = new Report();
