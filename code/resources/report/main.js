@@ -1,3 +1,18 @@
+var Report = function() {};
+
+Report.prototype.load = function(limit) {
+  d3.json('report.json', function(json) {
+    var errors = limit ? _.first(json.headers, limit) : json.headers;
+
+    $('#details').html(Mustache.render($('#tpl-details').html(), {"errors": errors}));
+
+    $('#details td.message').each(function(index, el){
+      var exception = new Exception(index, el);
+      exception.collapse();
+    });
+  });
+}
+
 var Exception = function(index, e) {
   this.index = index;
   this.trace = $('.trace', e);
@@ -37,11 +52,15 @@ Exception.prototype.collapse = function() {
   this.chart.hide();
 };
 
-d3.json('report.json', function(json) {
-  $('#details').html(Mustache.render($('#tpl-details').html(), {errors: json.headers}));
+/**********************************************************************************************************************/
+var report = new Report();
 
-  $('#details td.message').each(function(index, el){
-    var exception = new Exception(index, el);
-    exception.collapse();
-  });
+$('#action-load-top20').click(function(){
+  report.load(20);
 });
+
+$('#action-load-all').click(function(){
+  report.load();
+});
+
+report.load(20);
