@@ -68,6 +68,7 @@ public class Main {
             average = (double) exceptions / runningTimeSeconds;
 
         log.info("Processed {} events in {} seconds, averaging {} events per second", exceptions, runningTimeSeconds, average);
+        log.info("Found {} clusters", report.countClusters());
         log.info("Report available at {}. See the README", reportDirectory.getAbsolutePath());
     }
 }

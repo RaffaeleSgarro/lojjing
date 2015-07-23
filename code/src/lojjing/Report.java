@@ -101,6 +101,10 @@ public class Report {
         return in;
     }
 
+    public int countClusters() {
+        return seriesMap.size();
+    }
+
     private class HostCounter implements Comparable<HostCounter> {
 
         private final String host;
