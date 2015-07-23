@@ -1,0 +1,64 @@
+LOG LINE HERE - TO BE REMOVED
+java.lang.reflect.UndeclaredThrowableException
+	at com.sun.proxy.$Proxy32.call(Unknown Source)
+	at com.siss.Siss.Richiesta(java.lang.Object,java.lang.Class,java.lang.Class) (return java.lang.Object)(a:116)
+	at com.siss.Siss.inizioFasePrescrittiva(siss.xml.gssc.InizioFasePrescrittivaRequest) (return siss.xml.icce.AggiornaCartaCittadinoResponse)(a:253)
+	at device.command.siss.sign.RecipeSignerService.issueRequestToSiss(com.siss.ISiss) (return void)(a:166)
+	at device.command.siss.sign.SissSignDeviceAbstractCommand.executeInDeviceThread(common.IServices,device.IDeviceCommand$IDeviceCommandRpc) (return void)(a:52)
+                                                           void request()
+	at device.DeviceThread.run() (return void)(a:45)
+	at java.lang.Thread.run(Thread.java:744)
+Caused by: rpc2.commons.RpcRemoteException: rpc2.commons.RpcRemoteException: java.lang.RuntimeException: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: Message send failed
+	at rpc2.client.RpcInvoker.invoke(java.lang.Object,java.lang.String,rpc2.client.IRpcClientTransport,java.lang.reflect.Method,java.lang.Object[]) (return java.lang.Object)(a:81)
+	at rpc2.client.RpcInvoker.access$000(rpc2.client.RpcInvoker,java.lang.Object,java.lang.String,rpc2.client.IRpcClientTransport,java.lang.reflect.Method,java.lang.Object[]) (return java.lang.Object)(a:30)
+	at rpc2.client.RpcInvoker$1.invoke(java.lang.Object,java.lang.reflect.Method,java.lang.Object[]) (return java.lang.Object)(a:51)
+	... 7 more
+Caused by: rpc2.commons.RpcRemoteException: java.lang.RuntimeException: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: Message send failed
+	at rpc2.server.RpcExecutor.executeMethod(java.lang.String,java.lang.Object[]) (return java.lang.Object)(a:176)
+	at rpc2.server.RpcExecutor.execute(rpc2.server.IRpcServerTransport) (return void)(a:107)
+	at rpc2.server.queueresponder.JmsResponder$1.onMessage(javax.jms.Message) (return void)(a:46)
+	at org.apache.activemq.ActiveMQMessageConsumer.dispatch(ActiveMQMessageConsumer.java:1321)
+	at org.apache.activemq.ActiveMQSessionExecutor.dispatch(ActiveMQSessionExecutor.java:131)
+	at org.apache.activemq.ActiveMQSessionExecutor.iterate(ActiveMQSessionExecutor.java:202)
+	at org.apache.activemq.thread.PooledTaskRunner.runTask(PooledTaskRunner.java:129)
+	at org.apache.activemq.thread.PooledTaskRunner$1.run(PooledTaskRunner.java:47)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	... 1 more
+Caused by: java.lang.RuntimeException: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: Message send failed
+	at device.DeviceQueueChannel.call(a:51)
+	at sun.reflect.GeneratedMethodAccessor13.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at rpc2.server.RpcExecutor.executeMethod(java.lang.String,java.lang.Object[]) (return java.lang.Object)(a:169)
+	... 10 more
+Caused by: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: Message send failed
+	at com.sun.xml.internal.messaging.saaj.client.p2p.HttpSOAPConnection.call(HttpSOAPConnection.java:148)
+	at device.DeviceQueueChannel.call(a:44)
+	... 14 more
+Caused by: com.sun.xml.internal.messaging.saaj.SOAPExceptionImpl: Message send failed
+	at com.sun.xml.internal.messaging.saaj.client.p2p.HttpSOAPConnection.post(HttpSOAPConnection.java:278)
+	at com.sun.xml.internal.messaging.saaj.client.p2p.HttpSOAPConnection.call(HttpSOAPConnection.java:144)
+	... 15 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at java.net.Socket.connect(Socket.java:528)
+	at sun.net.NetworkClient.doConnect(NetworkClient.java:180)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:432)
+	at sun.net.www.http.HttpClient.openServer(HttpClient.java:527)
+	at sun.net.www.http.HttpClient.<init>(HttpClient.java:211)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:308)
+	at sun.net.www.http.HttpClient.New(HttpClient.java:326)
+	at sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:996)
+	at sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:932)
+	at sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:850)
+	at sun.net.www.protocol.http.HttpURLConnection.getOutputStream(HttpURLConnection.java:1091)
+	at com.sun.xml.internal.messaging.saaj.client.p2p.HttpSOAPConnection.post(HttpSOAPConnection.java:235)
+	... 16 more

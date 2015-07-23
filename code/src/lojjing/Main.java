@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.List;
 
 public class Main {
 
@@ -41,7 +40,10 @@ public class Main {
 
         Report report = new Report(reportDirectory);
 
+        int counter = 0;
+
         for (CSVRecord csv : parser) {
+            counter++;
             Preprocessor preprocessor = new Preprocessor();
             String content = preprocessor.preprocess(csv.get("content"));
             Event evt = new Event(csv.get("log_timestamp"), csv.get("core_id"), content);

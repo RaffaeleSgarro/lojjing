@@ -78,10 +78,10 @@ public class Event {
         if (lines.length < 2)
             return "N/A";
 
-        String messageLine = lines[1];
+        String messageLine = lines[0];
 
         if (messageLine.equals("java.lang.NullPointerException")) {
-            return "NPE at " + abbreviateInvocation(lines[2].substring(4));
+            return "NPE at " + abbreviateInvocation(lines[1].substring(4));
         } else {
             return messageLine;
         }
