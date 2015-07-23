@@ -25,11 +25,15 @@ public class Main {
 
         String filename = args[0];
 
+        log.info("CSV input file is {}", filename);
+
         if (reportDirectory.exists()) {
             FileUtils.forceDelete(reportDirectory);
         }
 
         FileUtils.forceMkdir(reportDirectory);
+
+        log.info("Working directory is {}", reportDirectory.getAbsolutePath());
 
         Reader in = new InputStreamReader(new FileInputStream(filename), "UTF-8");
         CSVParser parser = CSVFormat.newFormat(',')
@@ -40,22 +44,30 @@ public class Main {
 
         Report report = new Report(reportDirectory);
 
-        int counter = 0;
+        int exceptions = 0;
+
+        long start = System.currentTimeMillis();
+
+        log.info("Start processing events");
 
         for (CSVRecord csv : parser) {
-            counter++;
             Preprocessor preprocessor = new Preprocessor();
             String content = preprocessor.preprocess(csv.get("content"));
             Event evt = new Event(csv.get("log_timestamp"), csv.get("core_id"), content);
-            // Skip log.error calls without an exception
-            if (evt.signature() != -1)
-                report.add(evt, content);
+            report.add(evt, content);
+            exceptions++;
         }
 
         report.flush();
 
         in.close();
 
-        log.info("Report available at " + reportDirectory.getAbsolutePath());
+        long runningTimeSeconds = (System.currentTimeMillis() - start) / 1000L;
+        double average = 0;
+        if (exceptions != 0)
+            average = (double) exceptions / runningTimeSeconds;
+
+        log.info("Processed {} events in {}, averaging {} events per second", exceptions, runningTimeSeconds, average);
+        log.info("Report available at {}. See the README", reportDirectory.getAbsolutePath());
     }
 }

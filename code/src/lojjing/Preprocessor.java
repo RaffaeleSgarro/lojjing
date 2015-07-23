@@ -1,12 +1,21 @@
 package lojjing;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Preprocessor {
+
+    // 2015-07-06 20:39:41,785 ERROR [main] aUx.Nul:29 - Updater web server bind tcp port 6789 is not valid. wait 10 seconds
+    private static final Pattern logLine = Pattern.compile("^([A-Z]+) \\[.+?\\] .+? - (?<message>.+)$");
 
     public String preprocess(String content) {
         String[] lines = content.split("\\r?\\n");
 
-        if (lines.length < 3)
-            return content;
+        if (lines.length == 1 && lines[0].length() > "yyyy-MM-dd HH:mm:ss,mmm ".length()) {
+            String line = lines[0].substring("yyyy-MM-dd HH:mm:ss,mmm ".length());
+            Matcher m = logLine.matcher(line);
+            return m.matches() ? m.group("message") : lines[0];
+        }
 
         ExceptionModel root = null;
         ExceptionModel exceptionModel = null;

@@ -45,8 +45,10 @@ public class Event {
         // line ends normalized by preprocessor
         String[] lines = content.split("\\n");
 
-        if (lines.length < 3)
+        //  No exception here
+        if (lines.length < 3) {
             return -1;
+        }
 
         int signature = 0;
 
@@ -76,7 +78,7 @@ public class Event {
         String[] lines = content.split("\\r?\\n");
 
         if (lines.length < 2)
-            return "N/A";
+            return lines[0];
 
         String messageLine = lines[0];
 
