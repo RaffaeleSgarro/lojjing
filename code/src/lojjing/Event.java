@@ -46,8 +46,8 @@ public class Event {
         String[] lines = content.split("\\n");
 
         //  No exception here
-        if (lines.length < 3) {
-            return -1;
+        if (lines.length == 1) {
+            return normalizeLogLine(lines[0]).trim().hashCode();
         }
 
         int signature = 0;
@@ -68,6 +68,14 @@ public class Event {
         }
 
         return signature;
+    }
+
+    private String normalizeLogLine(String line) {
+        if (line.startsWith("PrinterScanner took")) {
+            return "PrinterScanner took NNN seconds";
+        } else {
+            return line;
+        }
     }
 
     public LocalDate day() {
