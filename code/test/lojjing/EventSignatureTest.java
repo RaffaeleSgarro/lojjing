@@ -1,17 +1,14 @@
 package lojjing;
 
-import org.apache.commons.io.IOUtils;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertSame;
 
-public class EventSignatureTest {
+public class EventSignatureTest extends TestCase {
 
     private String group;
 
@@ -31,12 +28,6 @@ public class EventSignatureTest {
     public void RuntimeException_Push_failed() throws Exception {
         setGroup("RuntimeException_Push_failed/001");
         assertSameSignature("001", "002", "003");
-    }
-
-    @Test
-    public void UndeclaredThrowableException_001() throws Exception {
-        setGroup("UndeclaredThrowableException/001");
-        assertSameSignature("001", "002");
     }
 
     @Test
@@ -77,13 +68,6 @@ public class EventSignatureTest {
     }
 
     private int hash(String id) throws IOException {
-        String resource = "/signatures/" + group + "/" + id + ".txt";
-        InputStream in = EventSignatureTest.class.getResourceAsStream(resource);
-
-        if (in == null)
-            throw new RuntimeException("Could not locate resource " + resource);
-
-        Event event = new Event("", "", IOUtils.toString(in, "UTF-8"));
-        return event.signature();
+        return new Event("", "", resource("/signatures/" + group + "/" + id + ".txt")).signature();
     }
 }

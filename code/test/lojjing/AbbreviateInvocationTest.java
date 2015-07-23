@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class AbbreviateInvocationTest {
+public class AbbreviateInvocationTest extends TestCase {
 
     private Event target;
     private String src;

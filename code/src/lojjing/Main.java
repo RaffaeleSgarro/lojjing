@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.List;
 
 public class Main {
 
@@ -41,10 +42,12 @@ public class Main {
         Report report = new Report(reportDirectory);
 
         for (CSVRecord csv : parser) {
-            Event evt = new Event(csv.get("log_timestamp"), csv.get("core_id"), csv.get("content"));
+            Preprocessor preprocessor = new Preprocessor();
+            String content = preprocessor.preprocess(csv.get("content"));
+            Event evt = new Event(csv.get("log_timestamp"), csv.get("core_id"), content);
             // Skip log.error calls without an exception
             if (evt.signature() != -1)
-                report.add(evt, csv.get("content"));
+                report.add(evt, content);
         }
 
         report.flush();

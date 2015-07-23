@@ -42,23 +42,24 @@ public class Event {
     }
 
     public int signature() {
-        String[] lines = content.split("\\r?\\n");
+        // line ends normalized by preprocessor
+        String[] lines = content.split("\\n");
 
         if (lines.length < 3)
             return -1;
 
         int signature = 0;
-        // skip log line
 
+        // log line removed from preprocessor
         // First exception line is of the form ExceptionClass[: message]
-        int colonIndex = lines[1].indexOf(':');
+        int colonIndex = lines[0].indexOf(':');
         if (colonIndex > 0) {
-            signature += lines[1].substring(0, colonIndex).hashCode();
+            signature += lines[0].substring(0, colonIndex).hashCode();
         } else {
-            signature += lines[1].hashCode();
+            signature += lines[0].hashCode();
         }
 
-        for (int i = 2; i < lines.length; i++) {
+        for (int i = 1; i < lines.length; i++) {
             String line = lines[i];
             Normalizer normalizer = new Normalizer();
             signature += normalizer.normalize(line).trim().hashCode();

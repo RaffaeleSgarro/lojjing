@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class NormalizerTest {
+public class NormalizerTest extends TestCase {
 
     private Normalizer target;
     private String thisLine;
@@ -44,6 +44,12 @@ public class NormalizerTest {
     public void testInvoiceNumberConversion() throws Exception {
         thisOne("Caused by: com.vaadin.data.util.converter.Converter$ConversionException: Could not convert '15/2015' to java.lang.Integer");
         matches("Caused by: com.vaadin.data.util.converter.Converter$ConversionException: Could not convert '25/2010' to java.lang.Integer");
+    }
+
+    @Test
+    public void testConnectionImplementation() throws Exception {
+        thisOne("java.net.TwoStacksPlainSocketImpl");
+        matches("java.net.DualStackPlainSocketImpl");
     }
 
     @BeforeMethod
