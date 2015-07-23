@@ -1,0 +1,8 @@
+device.command.siss.sign.RecipeException: Procedura SISS non riuscita
+Messaggio dal SISS: Il dato "codicePrestazione" : "26A" non e' valido.
+	at device.command.siss.sign.RecipeSignerService.raiseIfErrors(java.util.ArrayList) (return void)(a:221)
+	at device.command.siss.sign.RecipeSignerService.issueRequestToSiss(com.siss.ISiss) (return void)(a:184)
+	at device.command.siss.sign.SissSignDeviceAbstractCommand.executeInDeviceThread(common.IServices,device.IDeviceCommand$IDeviceCommandRpc) (return void)(a:52)
+                                                           void request()
+	at device.DeviceThread.run() (return void)(a:45)
+	at java.lang.Thread.run(Thread.java:744)
