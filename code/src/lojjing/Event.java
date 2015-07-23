@@ -73,6 +73,8 @@ public class Event {
     private String normalizeLogLine(String line) {
         if (line.startsWith("PrinterScanner took")) {
             return "PrinterScanner took NNN seconds";
+        } else if (line.startsWith("Could not load metadata for") && line.endsWith("tag not found")) {
+            return "Could not load metadata for GUID: GUID.tag not found";
         } else {
             return line;
         }
