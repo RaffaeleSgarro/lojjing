@@ -116,8 +116,6 @@ public class Preprocessor {
             return !title.startsWith(exception);
         }
 
-        // - rpc2.commons.RpcRemoteException
-        // - java.lang.reflect.UndeclaredThrowableException
         public ExceptionModel filter() {
             ExceptionModel currentIn = this;
 
@@ -126,7 +124,8 @@ public class Preprocessor {
 
             while (currentIn != null) {
                 if (currentIn.isNot("rpc2.commons.RpcRemoteException")
-                        && currentIn.isNot("java.lang.reflect.UndeclaredThrowableException")) {
+                        && currentIn.isNot("java.lang.reflect.UndeclaredThrowableException")
+                        && currentIn.isNot("org.jooq.exception.DataAccessException")) {
                     ExceptionModel next = new ExceptionModel(currentIn);
 
                     if (root == null) {

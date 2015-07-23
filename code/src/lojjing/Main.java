@@ -67,7 +67,7 @@ public class Main {
         if (exceptions != 0)
             average = (double) exceptions / runningTimeSeconds;
 
-        log.info("Processed {} events in {}, averaging {} events per second", exceptions, runningTimeSeconds, average);
+        log.info("Processed {} events in {} seconds, averaging {} events per second", exceptions, runningTimeSeconds, average);
         log.info("Report available at {}. See the README", reportDirectory.getAbsolutePath());
     }
 }
