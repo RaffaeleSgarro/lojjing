@@ -68,6 +68,6 @@ public class EventSignatureTest extends TestCase {
     }
 
     private int hash(String id) throws IOException {
-        return new Event("", "", resource("/signatures/" + group + "/" + id + ".txt")).signature();
+        return new Event(0, "", resource("/signatures/" + group + "/" + id + ".txt")).signature();
     }
 }

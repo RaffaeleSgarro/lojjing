@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class Main {
 
@@ -51,10 +53,12 @@ public class Main {
 
         log.info("Start processing events");
 
+        DateFormat csvFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         for (CSVRecord csv : parser) {
             Preprocessor preprocessor = new Preprocessor();
             String content = preprocessor.preprocess(csv.get("content"));
-            Event evt = new Event(csv.get("log_timestamp"), csv.get("core_id"), content);
+            Event evt = new Event(csvFormat.parse(csv.get("log_timestamp")).getTime(), csv.get("core_id"), content);
             report.add(evt, content);
             exceptions++;
         }
@@ -72,4 +76,5 @@ public class Main {
         log.info("Found {} clusters", report.countClusters());
         log.info("Report available at {}. See the README", reportDirectory.getAbsolutePath());
     }
+
 }

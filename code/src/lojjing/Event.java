@@ -1,8 +1,5 @@
 package lojjing;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
@@ -13,24 +10,14 @@ import java.util.stream.Collectors;
 
 public class Event {
 
-    private static final DateFormat csvFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    private final String timestamp;
+    private final long timestamp;
     private final String core;
     private final String content;
 
-    public Event(String timestamp, String core, String content) {
+    public Event(long timestamp, String core, String content) {
         this.timestamp = timestamp;
         this.core = core;
         this.content = content;
-    }
-
-    public long timestamp() {
-        try {
-            return csvFormat.parse(timestamp).getTime();
-        } catch (ParseException e) {
-            throw new RuntimeException("Could not parse timestamp " + timestamp, e);
-        }
     }
 
     public String core() {
@@ -81,7 +68,7 @@ public class Event {
     }
 
     public LocalDate day() {
-        return new Date(timestamp()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return new Date(timestamp).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     public String message() {

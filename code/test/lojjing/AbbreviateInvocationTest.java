@@ -64,7 +64,7 @@ public class AbbreviateInvocationTest extends TestCase {
     @BeforeMethod
     public void setUp() {
         src = null;
-        target = new Event("", "", "");
+        target = new Event(0, "", "");
     }
 
 }
