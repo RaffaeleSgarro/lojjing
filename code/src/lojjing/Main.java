@@ -43,6 +43,7 @@ public class Main {
                 .parse(in);
 
         Report report = new Report(reportDirectory);
+        report.setUp();
 
         int exceptions = 0;
 
